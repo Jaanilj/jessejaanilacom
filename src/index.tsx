@@ -1,8 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
+import App from './features/app/containers/App'
 
-function Greeting() {
-  return <h1>Welcome to my webpage</h1>
-}
+require('../css/common-styles.less')
 
-render(<Greeting />, document.getElementById('app'))
+render(<App />, document.getElementById('app'))

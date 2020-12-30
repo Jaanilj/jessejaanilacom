@@ -14,6 +14,20 @@ module.exports = {
         use: ['babel-loader', 'ts-loader'],
         exclude: /node_modules/,
       },
+      {
+        test: /(.module)?.less$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: { sourceMap: true },
+          },
+          {
+            loader: 'less-loader',
+            options: { sourceMap: true },
+          },
+        ],
+      },
     ],
   },
   resolve: {
