@@ -9,8 +9,9 @@
     "start": "webpack serve --open 'Chrome'",
     "clean": "rimraf dist/*",
     "lint": "eslint . --ext .ts,.tsx --fix",
-    "compile": "webpack",
+    "compile": "webpack --mode=development --devtool=inline-source-map",
     "build": "npm-run-all lint compile",
+    "build:production": "webpack --mode=production",
     "dev": "nodemon --watch src -e ts,tsx --exec npm run dev:restart",
     "dev:restart": "npm-run-all build",
     "test": "echo \"Error: no test specified\" && exit 1"
