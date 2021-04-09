@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './centered.module.less'
+import styles from '../containers/App.module.less'
 
 export default function About(): JSX.Element {
   const aboutMessage = `I'm a software developer living in Helsinki.
