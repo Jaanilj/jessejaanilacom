@@ -1,11 +1,13 @@
 import React from 'react'
-import Greeting from '../components/Greeting'
+import About from '../components/About'
+import Header from '../components/Header'
 import styles from './App.module.less'
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <div className={styles.container}>
-      <Greeting />
+      <Header />
+      <About />
     </div>
   )
 }
