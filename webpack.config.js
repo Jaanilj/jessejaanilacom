@@ -17,7 +17,12 @@ module.exports = {
         test: /(.module)?.less$/,
         use: [
           'style-loader',
-          '@teamsupercell/typings-for-css-modules-loader',
+          {
+            loader: '@teamsupercell/typings-for-css-modules-loader',
+            options: {
+              disableLocalsExport: true,
+            },
+          },
           'css-loader',
           'less-loader',
         ],
