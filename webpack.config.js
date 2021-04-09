@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack') //to access built-in plugins
 const HtmlPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
@@ -14,7 +15,12 @@ module.exports = {
       },
       {
         test: /(.module)?.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader'],
+        use: [
+          'style-loader',
+          '@teamsupercell/typings-for-css-modules-loader',
+          'css-loader',
+          'less-loader',
+        ],
       },
     ],
   },
@@ -25,6 +31,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
+    new webpack.WatchIgnorePlugin({ paths: [/less\.d\.ts$/] }),
     new CleanWebpackPlugin(),
     new HtmlPlugin({
       title: 'Jesse Jaanila',
