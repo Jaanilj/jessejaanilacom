@@ -3,7 +3,7 @@ import styles from '../containers/App.module.less'
 
 export default function About(): JSX.Element {
   const instagramUrl = 'https://www.instagram.com/jaanilajesse/'
-  const linkedinUrl = 'https://www.linkedin.com/in/jessejaanila/'
+  const linkedInUrl = 'https://www.linkedin.com/in/jessejaanila/'
   return (
     <section className={styles.centered}>
       <p>
@@ -12,12 +12,11 @@ export default function About(): JSX.Element {
         restaurants, enjoying oat-milk lattès or doing Crossfit®.`}
       </p>
       <p>
-        Find me on
+        {'Find me on '}
         <a href={instagramUrl}>instagram</a>
-        ,
-        <a href={linkedinUrl}>linkedin</a>
-        {' '}
-        and on few Discord servers answering programming questions.
+        {', '}
+        <a href={linkedInUrl}>linkedIn</a>
+        {' and on few Discord servers answering programming questions.'}
       </p>
     </section>
   )

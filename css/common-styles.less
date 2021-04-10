@@ -16,20 +16,59 @@
 
 h1 {
   font-size: @font-size-large;
+  margin-bottom: 0;
 }
 
 a {
   color: @dark-teal;
   text-decoration: none;
-  background-color: transparent;
+  transition: color 0.2s ease-in-out;
 }
-
-a::before {
-  content: ' ';
+a:before,
+a:after {
+  content: '';
+  width: 0;
+  height: 100%;
+  transition: 0.2s ease-out;
 }
-
-a:hover {
+a:hover,
+a:focus {
   text-decoration: underline;
+}
+
+@supports (mix-blend-mode: lighten) {
+  a:hover,
+  a:focus {
+    position: relative;
+    color: #000;
+    background: #fff;
+    mix-blend-mode: multiply;
+  }
+  a:hover::before,
+  a:focus::before {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: radial-gradient(
+      circle,
+      #23966c,
+      #faaa54,
+      #e23b4a,
+      #db0768,
+      #360670
+    );
+    pointer-events: none;
+  }
+  a:hover::before,
+  a:focus::before {
+    mix-blend-mode: screen;
+  }
 }
 
 p {
