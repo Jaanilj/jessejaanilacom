@@ -6,10 +6,10 @@ import styles from './App.module.less'
 
 export default function App(): JSX.Element {
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <Header />
       <About />
       <Footer />
-    </div>
+    </main>
   )
 }

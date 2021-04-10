@@ -1,12 +1,15 @@
+@import '../../../../css/variables.less';
+
 .container {
-  margin: auto;
+  margin: 0 auto;
   margin-top: 2rem;
   margin-bottom: 2rem;
-  max-width: 40rem;
+  padding-left: 25px;
+  padding-right: 25px;
   overflow-wrap: break-word;
 }
 
-.centered {
-  display: flex;
-  flex-flow: column nowrap;
+.content {
+  margin: 0 auto;
+  max-width: @content-width;
 }

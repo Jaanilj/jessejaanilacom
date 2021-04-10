@@ -14,6 +14,21 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  height: 100%;
+  font-size: @font-size-medium;
+}
+
+@media screen and (min-width: 30rem) {
+  html {
+    font-size: calc(@font-size-medium + 0.4 * ((100vw - 30rem) / 50));
+  }
+}
+
+body {
+  margin: 0;
+}
+
 h1 {
   font-size: @font-size-large;
   margin-bottom: 0;
@@ -72,7 +87,6 @@ a:focus {
 }
 
 p {
-  font-size: @font-size-medium;
   color: @gray;
   font-weight: @font-weight-base;
 }
