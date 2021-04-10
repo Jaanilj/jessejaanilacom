@@ -2,16 +2,22 @@ import React from 'react'
 import styles from '../containers/App.module.less'
 
 export default function About(): JSX.Element {
-  const aboutMessage = `I'm a software developer living in Helsinki.
-    I'm interest in the outdoors, breakfast, lattès, and Crossfit.
-    You can see what i'm doing with my life via`
-
   const instagramUrl = 'https://www.instagram.com/jaanilajesse/'
+  const linkedinUrl = 'https://www.linkedin.com/in/jessejaanila/'
   return (
     <section className={styles.centered}>
       <p>
-        {aboutMessage}
-        <a href={instagramUrl}>@jaanilajesse</a>
+        {`I'm a pragmatic software developer living in Helsinki. Outside of
+        programming-world, I'm probably enjoying the outdoors, testing breakfast
+        restaurants, enjoying oat-milk lattès or doing Crossfit®.`}
+      </p>
+      <p>
+        Find me on
+        <a href={instagramUrl}>instagram</a>
+        ,
+        <a href={linkedinUrl}>linkedin</a>
+        {' '}
+        and on few Discord servers answering programming questions.
       </p>
     </section>
   )
