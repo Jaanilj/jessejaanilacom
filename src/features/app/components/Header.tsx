@@ -9,8 +9,8 @@ const nextMessage = (() => {
     'Howdy doody!',
     'Hello there.',
     '¡Hola!',
-    'Hej Tjena',
-    'Shalom',
+    'Hej, Tjena',
+    'Bonjour',
     'Xin chào',
     'Guten Tag',
     'Konnichiwa',
@@ -38,41 +38,41 @@ export default function Header(): JSX.Element {
   const [state, setState] = useState(() => initState())
 
   useEffect(() => {
+    const { message, addingChars, targetMessage } = state
     const interval = setInterval(() => {
-      if (
-        state.addingChars &&
-        state.message.length === state.targetMessage.length
-      ) {
-        setState({
+      if (addingChars && message.length === targetMessage.length) {
+        return setState({
           ...state,
           addingChars: false,
         })
-      } else if (state.addingChars) {
-        state.searcher.exec(state.targetMessage)
-        setState({
+      }
+      if (addingChars) {
+        state.searcher.exec(targetMessage)
+        return setState({
           ...state,
-          message: state.targetMessage.substring(0, state.searcher.lastIndex),
+          message: targetMessage.substring(0, state.searcher.lastIndex),
         })
-      } else if (!state.addingChars && state.message.length === 0) {
-        setState({
+      }
+      if (!addingChars && message.length === 0) {
+        return setState({
           ...state,
           addingChars: true,
           targetMessage: nextMessage(),
           searcher: searcherRegExp(),
         })
-      } else {
-        setState({
-          ...state,
-          message: state.message.substring(0, state.message.length - 1),
-        })
       }
-    }, 220)
+      const match = /\S[ ]*$/.exec(message)
+      return setState({
+        ...state,
+        message: message.substring(0, match?.index ?? 0),
+      })
+    }, 200)
     return () => clearInterval(interval)
   }, [state])
 
   return (
     <header className={styles.header}>
-      <h1 className={styles.header_message}>{state.message}</h1>
+      <h1>{state.message}</h1>
     </header>
   )
 }

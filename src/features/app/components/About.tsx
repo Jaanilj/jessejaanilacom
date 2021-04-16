@@ -8,7 +8,7 @@ export default function About(): JSX.Element {
     <section>
       <p>
         I&apos;m a pragmatic and solution-oriented software developer working
-        beside the beautiful people at <a href={relexUrl}>RELEX Solutions</a>.
+        besides the beautiful people at <a href={relexUrl}>RELEX Solutions</a>.
         Outside of the programming world, I&apos;m probably enjoying the
         outdoors, testing breakfast restaurants, enjoying oat-milk lattès or
         doing Crossfit®.
