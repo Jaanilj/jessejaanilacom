@@ -1,14 +1,21 @@
+.header {
+  isolation: isolate;
+}
+
 .header h1 {
   line-height: initial;
 }
 
 @supports (mix-blend-mode: lighten) {
   .header h1 {
+    position: relative;
     color: #000;
     background: #fff;
+    mix-blend-mode: multiply;
   }
   .header h1::before {
     content: '';
+    display: block;
     position: absolute;
     height: 100%;
     width: 100%;
