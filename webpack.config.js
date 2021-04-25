@@ -3,7 +3,6 @@ const webpack = require('webpack') //to access built-in plugins
 const HtmlPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 
 const isProd = (options) => options.mode === 'production'
@@ -19,6 +18,8 @@ const config = (env, options) => ({
   },
   mode: options.mode,
   devServer: {
+    compress: true,
+    open: true,
     hot: true,
     stats: 'minimal',
     overlay: {
@@ -32,7 +33,6 @@ const config = (env, options) => ({
         // ts or tsx files will be transpiled to js by ts-loader
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        exclude: /node_modules/,
         options: {
           // We use ForkTsCheckerWebpackPlugin for typechecking
           transpileOnly: true,
@@ -55,10 +55,12 @@ const config = (env, options) => ({
     ],
   },
   optimization: {
+    moduleIds: 'deterministic',
+    runtimeChunk: 'single',
     splitChunks: {
       cacheGroups: {
         vendor: {
-          test: /node_modules/,
+          test: /\/node_modules\//,
           name: 'vendor',
           chunks: 'all',
         },
@@ -77,7 +79,6 @@ const config = (env, options) => ({
       // For the dev server overlay to work
       async: false,
     }),
-    new CleanWebpackPlugin(),
     new HtmlPlugin({
       title: 'Jesse Jaanila',
       favicon: path.resolve(__dirname, 'static', 'favicon.ico'),
@@ -87,6 +88,7 @@ const config = (env, options) => ({
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
 })
 
