@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import styles from './Header.module.less'
 
-const searcherRegExp = () => new RegExp('\\S', 'g')
+const forwardSearcher = /\S/g
+const backwardSearcher = /\S[ ]*$/
 
 const nextMessage = (() => {
-  const messages = [
+  let messages = [
     'Such dynamicity',
     'Howdy doody!',
     'Hello there.',
@@ -16,22 +17,17 @@ const nextMessage = (() => {
     'Konnichiwa',
   ]
 
-  function rotate<T>(items: T[]): T[] {
-    const first = items.shift()
-    if (first) {
-      items.push(first)
-    }
-    return items
+  return () => {
+    const [first, ...rest] = messages
+    messages = [...rest, first]
+    return messages[0]
   }
-
-  return () => rotate(messages)[0]
 })()
 
 const initState = () => ({
   addingChars: true,
   targetMessage: nextMessage(),
   message: '',
-  searcher: searcherRegExp(),
 })
 
 export default function Header(): JSX.Element {
@@ -40,31 +36,30 @@ export default function Header(): JSX.Element {
   useEffect(() => {
     const { message, addingChars, targetMessage } = state
     const interval = setInterval(() => {
-      if (addingChars && message.length === targetMessage.length) {
+      if (addingChars) {
+        const match = forwardSearcher.exec(targetMessage)
+        if (match) {
+          return setState({
+            ...state,
+            message: targetMessage.substring(0, match.index + 1),
+          })
+        }
         return setState({
           ...state,
           addingChars: false,
         })
       }
-      if (addingChars) {
-        state.searcher.exec(targetMessage)
+      const match = backwardSearcher.exec(message)
+      if (match) {
         return setState({
           ...state,
-          message: targetMessage.substring(0, state.searcher.lastIndex),
+          message: message.substring(0, match.index),
         })
       }
-      if (!addingChars && message.length === 0) {
-        return setState({
-          ...state,
-          addingChars: true,
-          targetMessage: nextMessage(),
-          searcher: searcherRegExp(),
-        })
-      }
-      const match = /\S[ ]*$/.exec(message)
       return setState({
         ...state,
-        message: message.substring(0, match?.index ?? 0),
+        addingChars: true,
+        targetMessage: nextMessage(),
       })
     }, 200)
     return () => clearInterval(interval)
