@@ -2,17 +2,15 @@ const path = require('path')
 const webpack = require('webpack') //to access built-in plugins
 const HtmlPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 
 const isProd = (options) => options.mode === 'production'
-const minimizeCSSPlugin = (options) =>
+const maybeExtractCSSPlugin = (options) =>
   isProd(options)
     ? new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' })
     : undefined
-const optimizeHTMLPlugin = (options) =>
-  isProd(options) ? new OptimizeCSSAssetsPlugin() : undefined
 
 const config = (env, options) => ({
   target: 'web',
@@ -66,13 +64,13 @@ const config = (env, options) => ({
         },
       },
     },
+    minimizer: ['...', new CssMinimizerPlugin()],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
-    minimizeCSSPlugin(options),
-    optimizeHTMLPlugin(options),
+    maybeExtractCSSPlugin(options),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.WatchIgnorePlugin({ paths: [/less\.d\.ts$/] }),
     new ForkTsCheckerWebpackPlugin({
@@ -82,7 +80,7 @@ const config = (env, options) => ({
     new CleanWebpackPlugin(),
     new HtmlPlugin({
       title: 'Jesse Jaanila',
-      favicon: './static/clown-face.png',
+      favicon: path.resolve(__dirname, 'static', 'favicon.ico'),
       template: path.resolve(__dirname, 'src', 'index.html'),
     }),
   ].filter(Boolean),
