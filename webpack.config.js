@@ -2,17 +2,14 @@ const path = require('path')
 const webpack = require('webpack') //to access built-in plugins
 const HtmlPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 
 const isProd = (options) => options.mode === 'production'
-const minimizeCSSPlugin = (options) =>
+const maybeExtractCSSPlugin = (options) =>
   isProd(options)
     ? new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' })
     : undefined
-const optimizeHTMLPlugin = (options) =>
-  isProd(options) ? new OptimizeCSSAssetsPlugin() : undefined
 
 const config = (env, options) => ({
   target: 'web',
@@ -21,6 +18,8 @@ const config = (env, options) => ({
   },
   mode: options.mode,
   devServer: {
+    compress: true,
+    open: true,
     hot: true,
     stats: 'minimal',
     overlay: {
@@ -34,7 +33,6 @@ const config = (env, options) => ({
         // ts or tsx files will be transpiled to js by ts-loader
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        exclude: /node_modules/,
         options: {
           // We use ForkTsCheckerWebpackPlugin for typechecking
           transpileOnly: true,
@@ -57,38 +55,40 @@ const config = (env, options) => ({
     ],
   },
   optimization: {
+    moduleIds: 'deterministic',
+    runtimeChunk: 'single',
     splitChunks: {
       cacheGroups: {
         vendor: {
-          test: /node_modules/,
+          test: /\/node_modules\//,
           name: 'vendor',
           chunks: 'all',
         },
       },
     },
+    minimizer: ['...', new CssMinimizerPlugin()],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
-    minimizeCSSPlugin(options),
-    optimizeHTMLPlugin(options),
+    maybeExtractCSSPlugin(options),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.WatchIgnorePlugin({ paths: [/less\.d\.ts$/] }),
     new ForkTsCheckerWebpackPlugin({
       // For the dev server overlay to work
       async: false,
     }),
-    new CleanWebpackPlugin(),
     new HtmlPlugin({
       title: 'Jesse Jaanila',
-      favicon: './static/clown-face.png',
+      favicon: path.resolve(__dirname, 'static', 'favicon.ico'),
       template: path.resolve(__dirname, 'src', 'index.html'),
     }),
   ].filter(Boolean),
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
 })
 
