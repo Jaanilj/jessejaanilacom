@@ -1,10 +1,10 @@
 import React from 'react'
-import About from '../components/About'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
+import About from '../about/About'
+import Footer from '../footer/Footer'
+import Header from '../header/Header'
 import styles from './App.module.less'
 
-export default function App(): JSX.Element {
+function App(): JSX.Element {
   return (
     <main className={styles.container}>
       <Header />
@@ -13,3 +13,5 @@ export default function App(): JSX.Element {
     </main>
   )
 }
+
+export default App

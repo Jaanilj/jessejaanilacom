@@ -30,7 +30,7 @@ const initState = () => ({
   message: '',
 })
 
-export default function Header(): JSX.Element {
+function Header(): JSX.Element {
   const [state, setState] = useState(() => initState())
 
   useEffect(() => {
@@ -71,3 +71,5 @@ export default function Header(): JSX.Element {
     </header>
   )
 }
+
+export default Header

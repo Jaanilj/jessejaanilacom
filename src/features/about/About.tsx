@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function About(): JSX.Element {
+function About(): JSX.Element {
   const relexUrl = 'https://www.relexsolutions.com/'
   const instagramUrl = 'https://www.instagram.com/jaanilajesse/'
   const linkedInUrl = 'https://www.linkedin.com/in/jessejaanila/'
@@ -21,3 +21,5 @@ export default function About(): JSX.Element {
     </section>
   )
 }
+
+export default About
