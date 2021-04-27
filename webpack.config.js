@@ -81,7 +81,7 @@ const config = (env, options) => ({
       async: false,
     }),
     new FaviconsWebpackPlugin({
-      logo: path.resolve(__dirname, 'static', 'favicon.ico'),
+      logo: path.resolve(__dirname, 'public', 'favicon.ico'),
       cache: true,
       mode: 'auto',
     }),
