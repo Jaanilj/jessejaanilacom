@@ -4,6 +4,7 @@ const HtmlPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 const isProd = (options) => options.mode === 'production'
 const maybeExtractCSSPlugin = (options) =>
@@ -79,9 +80,13 @@ const config = (env, options) => ({
       // For the dev server overlay to work
       async: false,
     }),
+    new FaviconsWebpackPlugin({
+      logo: path.resolve(__dirname, 'static', 'favicon.ico'),
+      cache: true,
+      mode: 'auto',
+    }),
     new HtmlPlugin({
       title: 'Jesse Jaanila',
-      favicon: path.resolve(__dirname, 'static', 'favicon.ico'),
       template: path.resolve(__dirname, 'src', 'index.html'),
     }),
   ].filter(Boolean),
