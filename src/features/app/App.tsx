@@ -1,12 +1,11 @@
-import React from 'react'
 import About from '../about/About'
 import Footer from '../footer/Footer'
 import Header from '../header/Header'
-import styles from './App.module.less'
+import './App.css'
 
 function App(): JSX.Element {
   return (
-    <main className={styles.container}>
+    <main className="app">
       <Header />
       <About />
       <Footer />
