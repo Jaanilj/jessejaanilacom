@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import styles from './Header.module.less'
+import { useState, useEffect } from 'react'
+import './Header.css'
 
-const forwardSearcher = /\S/g
-const backwardSearcher = /\S[ ]*$/
+const forwardSearcherRegex = /\S/g
+const backwardSearcherRegex = /\S[ ]*$/
+const messageTimeout = 200
+
+type WelcomeMessages = [string, ...string[]] | [...string[], string]
 
 const nextMessage = (() => {
-  let messages = [
+  let messages: WelcomeMessages = [
     'Such dynamicity',
     'Howdy doody!',
     'Hello there.',
@@ -24,49 +27,36 @@ const nextMessage = (() => {
   }
 })()
 
-const initState = () => ({
-  addingChars: true,
-  targetMessage: nextMessage(),
-  message: '',
-})
+const initState = () => ({ addingChars: true, targetMessage: nextMessage(), message: '' })
 
 function Header(): JSX.Element {
-  const [state, setState] = useState(() => initState())
+  const [state, setState] = useState(initState)
 
   useEffect(() => {
     const { message, addingChars, targetMessage } = state
+
     const interval = setInterval(() => {
       if (addingChars) {
-        const match = forwardSearcher.exec(targetMessage)
+        const match = forwardSearcherRegex.exec(targetMessage)
         if (match) {
-          return setState({
-            ...state,
-            message: targetMessage.substring(0, match.index + 1),
-          })
+          const nextMessage = targetMessage.substring(0, match.index + 1)
+          return setState({ ...state, message: nextMessage })
         }
-        return setState({
-          ...state,
-          addingChars: false,
-        })
+        return setState({ ...state, addingChars: false })
       }
-      const match = backwardSearcher.exec(message)
+      const match = backwardSearcherRegex.exec(message)
       if (match) {
-        return setState({
-          ...state,
-          message: message.substring(0, match.index),
-        })
+        const nextMessage = message.substring(0, match.index)
+        return setState({ ...state, message: nextMessage })
       }
-      return setState({
-        ...state,
-        addingChars: true,
-        targetMessage: nextMessage(),
-      })
-    }, 200)
+      return setState({ ...state, addingChars: true, targetMessage: nextMessage() })
+    }, messageTimeout)
+
     return () => clearInterval(interval)
   }, [state])
 
   return (
-    <header className={styles.header}>
+    <header className="header">
       <h1>{state.message}</h1>
     </header>
   )
