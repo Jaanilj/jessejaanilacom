@@ -18,17 +18,13 @@ let state = {
   message: '',
 }
 
-// Constants
-const messageTimeout = 200
-const forwardSearcherRegex = /\S/g
-const backwardSearcherRegex = /\S[ ]*$/
-
-// DOM elements
-const welcomeMessageElement = document.getElementById('welcomeMessage')
+// Update the welcome message text
+function updateWelcomeMessage(element) {
+  element.textContent = state.message
+}
 
 // Initialize the state
 function initState() {
-  // Rotate the messages array (take first element and put it at the end)
   const firstMessage = welcomeMessages.shift()
   welcomeMessages.push(firstMessage)
 
@@ -39,15 +35,16 @@ function initState() {
   }
 }
 
-// Update the welcome message text
-function updateWelcomeMessage() {
-  if (welcomeMessageElement) {
-    welcomeMessageElement.textContent = state.message
-  }
-}
-
 // Animation interval
-function startMessageAnimation() {
+function startMessageAnimation(element) {
+  if (!element) {
+    return
+  }
+
+  const messageTimeout = 200
+  const forwardSearcherRegex = /\S/g
+  const backwardSearcherRegex = /\S[ ]*$/
+
   return setInterval(() => {
     const { message, addingChars, targetMessage } = state
 
@@ -56,7 +53,7 @@ function startMessageAnimation() {
       if (match) {
         const nextMessage = targetMessage.substring(0, match.index + 1)
         state.message = nextMessage
-        updateWelcomeMessage()
+        updateWelcomeMessage(element)
 
         // Reset regex lastIndex
         forwardSearcherRegex.lastIndex = match.index + 1
@@ -69,23 +66,19 @@ function startMessageAnimation() {
       if (match) {
         const nextMessage = message.substring(0, match.index)
         state.message = nextMessage
-        updateWelcomeMessage()
+        updateWelcomeMessage(element)
       } else {
         // Reset and start with next message
         state = initState()
-        updateWelcomeMessage()
+        updateWelcomeMessage(element)
       }
     }
   }, messageTimeout)
 }
 
-// Initialize the application
-function init() {
-  // Set initial state with first message
-  state = initState()
-  // Start the message animation
-  startMessageAnimation()
-}
-
 // Start the application when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', init)
+document.addEventListener('DOMContentLoaded', () => {
+  const welcomeMessageElement = document.getElementById('welcomeMessage')
+  state = initState()
+  startMessageAnimation(welcomeMessageElement)
+})
