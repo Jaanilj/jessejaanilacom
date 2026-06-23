@@ -91,7 +91,9 @@ header h1 {
 
 .char {
   display: inline-block;
-  will-change: transform, opacity;
+  /* opt out of the global `* { contain: content }` so the h1 gradient
+     (mix-blend-mode) blends onto each letter instead of being isolated */
+  contain: none;
 }
 
 @supports (mix-blend-mode: lighten) {
