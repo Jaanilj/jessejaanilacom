@@ -1,3 +1,5 @@
+import './styles.css'
+
 // Cycling multilingual welcome messages, revealed one character at a time with
 // the Web Animations API: each letter flips in (rotateX), holds, then dissolves
 // out. Degrades to a plain cross-fade when the visitor prefers reduced motion.
