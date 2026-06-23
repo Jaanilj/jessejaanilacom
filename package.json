@@ -1,18 +1,20 @@
 {
-  "author": "Jesse Jaanila",
   "name": "jessejaanilacom",
+  "private": true,
   "description": "My homepage",
   "license": "UNLICENCED",
-  "private": true,
+  "author": "Jesse Jaanila",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "oxlint",
+    "format": "oxfmt"
   },
   "devDependencies": {
-    "lightningcss": "^1.29.2",
-    "terser": "^5.39.0",
-    "vite": "^6.2.0"
+    "oxfmt": "^0.56.0",
+    "oxlint": "^1.71.0",
+    "vite": "^8.1.0"
   }
 }
