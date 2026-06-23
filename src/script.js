@@ -5,15 +5,15 @@ import './styles.css'
 // then dissolves out. Degrades to a plain cross-fade when the visitor prefers
 // reduced motion.
 const welcomeMessages = [
-  'Such dynamicity',
+  'Such dynamicity.',
   'Howdy doody!',
   'Hello there.',
   '¡Hola!',
-  'Hej, Tjena',
-  'Bonjour',
-  'Xin chào',
-  'Guten Tag',
-  'Konnichiwa',
+  'Hej, Tjena!',
+  'Bonjour!',
+  'Xin chào!',
+  'Guten Tag!',
+  'Konnichiwa!',
 ]
 
 const EASING = 'cubic-bezier(.3, 1.2, .4, 1)'
