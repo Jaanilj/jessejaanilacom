@@ -22,9 +22,7 @@ const BLUR = '8px'
 
 // Reveal pacing is 15% faster than the original 650ms / 60ms; dissolve runs a
 // further 20% faster than the reveal. `fill: 'backwards'` lets each letter fall
-// back to its plain styled state once revealed, so the heading's blend-mode
-// gradient shows through during the hold — a lingering transform or filter
-// would give the letter its own stacking context and hide the gradient.
+// back to its plain styled state once revealed.
 const REVEAL = {
   keyframes: [
     { opacity: 0, filter: `blur(${BLUR})`, transform: 'rotateX(-90deg) translateY(0.2em)' },
@@ -71,6 +69,18 @@ function renderChars(element, text) {
   return spans
 }
 
+// Each .char clips a gradient to its own glyph (so the colour flips with the
+// letter). Size and offset every letter's gradient to the whole heading box so
+// together they read as one continuous gradient instead of one per letter.
+function paintGradient(element, spans) {
+  const word = element.getBoundingClientRect()
+  for (const span of spans) {
+    const box = span.getBoundingClientRect()
+    span.style.backgroundSize = `${word.width}px ${word.height}px`
+    span.style.backgroundPosition = `${word.left - box.left}px ${word.top - box.top}px`
+  }
+}
+
 // Animate every span with the given phase, staggered per letter
 function playStagger(spans, { keyframes, duration, step, fill, reverse = false }) {
   const animations = spans.map((span, index) =>
@@ -92,13 +102,14 @@ async function runAnimation(element) {
     const message = welcomeMessages[index]
     index = (index + 1) % welcomeMessages.length
 
+    const spans = renderChars(element, message)
+    paintGradient(element, spans)
+
     if (reduceMotion.matches) {
-      element.textContent = message
       element.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, fill: 'both' })
       await wait(HOLD + 800)
       await element.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: 'both' }).finished
     } else {
-      const spans = renderChars(element, message)
       await playStagger(spans, REVEAL)
       await wait(HOLD)
       await playStagger(spans, DISSOLVE)
