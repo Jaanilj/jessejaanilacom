@@ -5,7 +5,6 @@ import './styles.css'
 // then dissolves out. Degrades to a plain cross-fade when the visitor prefers
 // reduced motion.
 const welcomeMessages = [
-  'Such dynamicity.',
   'Howdy doody!',
   'Hello there.',
   '¡Hola!',
