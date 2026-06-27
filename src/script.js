@@ -1,9 +1,9 @@
 import './styles.css'
 
 // Cycling multilingual welcome messages, revealed one character at a time with
-// the Web Animations API: each letter flips in (rotateX) through a blur, holds,
-// then dissolves out. Degrades to a plain cross-fade when the visitor prefers
-// reduced motion.
+// the Web Animations API: each greeting's letters blur in on a staggered
+// left-to-right wave, hold, then blur back out. Degrades to a plain cross-fade
+// when the visitor prefers reduced motion.
 const welcomeMessages = [
   'Howdy doody!',
   'Hello there.',
@@ -15,32 +15,34 @@ const welcomeMessages = [
   'Konnichiwa!',
 ]
 
-const EASING = 'cubic-bezier(.3, 1.2, .4, 1)'
 const HOLD = 1400
-const BLUR = '8px'
+const BLUR = '10px'
 
-// Reveal pacing is 15% faster than the original 650ms / 60ms; dissolve runs a
-// further 20% faster than the reveal. `fill: 'backwards'` lets each letter fall
-// back to its plain styled state once revealed.
+// Each greeting's letters resolve out of a dim, squeezed blur to crisp on a
+// staggered left-to-right wave (ease-out), hold, then blur back out the same way
+// (ease-in) — a per-letter "refresh" that sweeps across the word, modelled on
+// staggered-text_2.mp4. `fill` pins each letter to its start/end state outside
+// its own slice so the wave reads cleanly.
 const REVEAL = {
   keyframes: [
-    { opacity: 0, filter: `blur(${BLUR})`, transform: 'rotateX(-90deg) translateY(0.2em)' },
+    { opacity: 0, filter: `blur(${BLUR})`, transform: 'scaleX(0.86)' },
     { opacity: 1, filter: 'blur(0)', transform: 'none' },
   ],
-  duration: 553,
-  step: 51,
+  duration: 500,
+  step: 55,
+  easing: 'cubic-bezier(.22, 1, .36, 1)',
   fill: 'backwards',
 }
 
 const DISSOLVE = {
   keyframes: [
     { opacity: 1, filter: 'blur(0)', transform: 'none' },
-    { opacity: 0, filter: `blur(${BLUR})`, transform: 'rotateX(90deg) translateY(-0.2em)' },
+    { opacity: 0, filter: `blur(${BLUR})`, transform: 'scaleX(0.86)' },
   ],
-  duration: 442,
-  step: 41,
+  duration: 420,
+  step: 50,
+  easing: 'cubic-bezier(.55, 0, 1, .45)',
   fill: 'forwards',
-  reverse: true,
 }
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -81,12 +83,12 @@ function paintGradient(element, spans) {
 }
 
 // Animate every span with the given phase, staggered per letter
-function playStagger(spans, { keyframes, duration, step, fill, reverse = false }) {
+function playStagger(spans, { keyframes, duration, step, easing, fill, reverse = false }) {
   const animations = spans.map((span, index) =>
     span.animate(keyframes, {
       duration,
       delay: (reverse ? spans.length - 1 - index : index) * step,
-      easing: EASING,
+      easing,
       fill,
     })
   )
