@@ -28,8 +28,8 @@ const REVEAL = {
     { opacity: 0, filter: `blur(${BLUR})`, transform: 'scaleX(0.86)' },
     { opacity: 1, filter: 'blur(0)', transform: 'none' },
   ],
-  duration: 500,
-  step: 55,
+  duration: 435,
+  step: 48,
   easing: 'cubic-bezier(.22, 1, .36, 1)',
   fill: 'backwards',
 }
@@ -39,8 +39,8 @@ const DISSOLVE = {
     { opacity: 1, filter: 'blur(0)', transform: 'none' },
     { opacity: 0, filter: `blur(${BLUR})`, transform: 'scaleX(0.86)' },
   ],
-  duration: 420,
-  step: 50,
+  duration: 365,
+  step: 43,
   easing: 'cubic-bezier(.55, 0, 1, .45)',
   fill: 'forwards',
 }
