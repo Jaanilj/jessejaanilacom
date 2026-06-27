@@ -16,7 +16,7 @@ const welcomeMessages = [
 ]
 
 const HOLD = 1400
-const BLUR = '10px'
+const BLUR = '4px'
 
 // Each greeting's letters resolve out of a dim, squeezed blur to crisp on a
 // staggered left-to-right wave (ease-out), hold, then blur back out the same way
