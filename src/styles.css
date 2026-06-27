@@ -13,6 +13,10 @@ body {
   line-height: 1.5;
   color: hsl(0 0% 9%);
   background-color: hsl(0 0% 93%);
+  /* `contain: content` on * stops the body background from propagating to the
+     canvas, so fill the viewport and drop the default margin to cover the page */
+  margin: 0;
+  min-height: 100vh;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
